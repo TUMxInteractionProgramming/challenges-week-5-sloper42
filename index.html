@@ -25,10 +25,12 @@
     <!-- embed external JavaScript file for app interaction -->
     <script src="js/script.js"></script>
 
+        <!-- embed external JavaScript file for emojis -->
+        <script src="js/emojis-list.js"></script>
 </head>
 
 <!-- #8 #channel #onload all channels when the body has loaded -->
-<body onload="listChannels()">
+<body onload="listChannels(compareChannelsNew)">
 
 <!-- channel area -->
 <div id="channels">
@@ -94,17 +96,17 @@
 
     <!-- TAB BAR -->
     <div id="tab-bar">
-        <button class="selected" id="tab-new" onclick="selectTab('#tab-new')">
+        <button class="selected" id="tab-new" onclick="onTabNew()">
             <!-- #7  replacing icons -->
             <i class="far fa-lightbulb"></i>
             New
         </button>
-        <button id="tab-trending" onclick="selectTab('#tab-trending')">
+        <button id="tab-trending" onclick="onTabTrending()">
             <!-- #7  replacing icons -->
             <i class="fas fa-fire"></i>
             Trending
         </button>
-        <button id="tab-favorites" onclick="selectTab('#tab-favorites')">
+        <button id="tab-favorites" onclick="onTabFavorites()">
             <!-- #7  replacing icons -->
             <i class="fas fa-star"></i>
             Favorites
@@ -123,7 +125,7 @@
     </h1>
 
     <div id="messages">
-
+<!--
         <div class="message own">
             <h3><a href="http://w3w.co/cheeses.yard.applies" target="_blank"><strong>cheeses.yard.applies</strong></a>
                 Wed, June 20th, 13:37 <em>15 min. left</em></h3>
@@ -168,7 +170,7 @@
             <p>北京</p>
             <button>+5 min.</button>
         </div>
-
+-->
     </div>
 
     <!-- ChAT BAR -->

@@ -65,6 +65,23 @@ function star() {
     $('#channels li:contains(' + currentChannel.name + ') .fa').addClass(currentChannel.starred ? 'fas' : 'far');
 }
 
+function onTabNew()
+{
+    listChannels(compareChannelsNew);
+    selectTab('#tab-new');
+}
+
+function onTabTrending()
+{
+    listChannels(compareChannelsTrending);
+    selectTab('#tab-trending');
+}
+
+function onTabFavorites()
+{
+    listChannels(compareChannelsFavorites);
+    selectTab('#tab-favorites')
+}
 /**
  * Function to select the given tab
  * @param tabId #id of the tab
@@ -79,6 +96,17 @@ function selectTab(tabId) {
  * toggle (show/hide) the emojis menu
  */
 function toggleEmojis() {
+    var emojis = require('emojis-list');
+
+    $('#emojis').empty();
+
+    var i;
+    for ( i=0;i< emojis.length;i++)
+    {
+        $('#emojis').append(emojis[i]);
+    }
+
+
     $('#emojis').toggle(); // #toggle
 }
 
@@ -109,9 +137,14 @@ function sendMessage() {
     var message = new Message($('#message').val());
     console.log("New message:", message);
 
+    if (message.length == 0) return;
+
     // #8 convenient message append with jQuery:
     $('#messages').append(createMessageElement(message));
 
+    currentChannel.messages.push(message);
+    currentChannel.messageCount++;
+    
     // #8 messages will scroll to a certain point if we apply a certain height, in this case the overall scrollHeight of the messages-div that increases with every message;
     // it would also scroll to the bottom when using a very high number (e.g. 1000000000);
     $('#messages').scrollTop($('#messages').prop('scrollHeight'));
@@ -145,16 +178,36 @@ function createMessageElement(messageObject) {
 }
 
 
-function listChannels() {
+function compareChannelsNew(channel1, channel2)
+{
+    if (channel1.createdOn > channel2.createdOn) return -1;
+    return 1;
+}
+
+function compareChannelsTrending(channel1, channel2)
+{
+    if (channel1.messageCount > channel2.messageCount) return -1;
+    return 1;
+}
+
+function compareChannelsFavorites(channel1, channel2)
+{
+   if (channel1.starred) return -1;
+   return 1;
+}
+
+function listChannels(criterion) {
     // #8 channel onload
     //$('#channels ul').append("<li>New Channel</li>")
 
-    // #8 five new channels
-    $('#channels ul').append(createChannelElement(yummy));
-    $('#channels ul').append(createChannelElement(sevencontinents));
-    $('#channels ul').append(createChannelElement(killerapp));
-    $('#channels ul').append(createChannelElement(firstpersononmars));
-    $('#channels ul').append(createChannelElement(octoberfest));
+    channels.sort(criterion);
+
+    $('#channels ul').empty();
+    var i;
+    for ( i = 0; i < channels.length; i++)
+    {
+        $('#channels ul').append(createChannelElement(channels[i]));
+    }
 }
 
 /**
